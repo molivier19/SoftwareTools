@@ -1,0 +1,443 @@
+" To install vim-plug, run in terminal:
+" vim:
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
+" neovim:
+" curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
+
+try
+
+    " Specify a directory for plugins
+    if has("nvim")
+        " neovim:
+        call plug#begin('~/.local/share/nvim/plugged')
+    else
+        " vim:
+        call plug#begin('~/.vim/plugged')
+
+        Plug 'ConradIrwin/vim-bracketed-paste'
+
+        " Cursor shape
+        " Plug 'jszakmeister/vim-togglecursor'
+
+        " let &t_SI = "\<Esc>[6 q"
+        " let &t_SR = "\<Esc>[4 q"
+        " let &t_EI = "\<Esc>[2 q"
+
+        " let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        " let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+        " let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+        let &t_ti.="\e[1 q"
+        let &t_SI.="\e[5 q"
+        let &t_EI.="\e[1 q"
+        let &t_te.="\e[0 q"
+
+
+    endif
+
+
+    Plug 'tpope/vim-commentary'
+    " Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline-themes'
+    " Plug 'khatiba/vim-airline-themes'
+    " Plug 'zefei/vim-wintabs'
+    " Plug 'zefei/vim-wintabs-powerline'
+    " Plug 'ap/vim-buftabline'
+
+
+    Plug 'rafi/awesome-vim-colorschemes'
+    Plug 'tomasr/molokai'
+    Plug 'jsit/disco.vim'
+
+    Plug 'dpelle/vim-LanguageTool'
+    Plug 'vim-latex/vim-latex'
+
+    " Cycle through installed colorschemes
+    Plug 'vim-scripts/CycleColor' " use <F4>
+
+    " Plug 'kubahorak/diacritic' " to remove accents, etc.
+
+    " delete buffer without closing split windows
+    Plug 'qpkorr/vim-bufkill'
+    call plug#end()
+
+
+    "" Vim theme
+    " let g:airline_theme = 'typewriter'
+    " colorscheme minimalist
+    " colorscheme tender
+    " colorscheme OceanicNext
+    " colorscheme onedark
+    " colorscheme dracula
+    " colorscheme one
+    " set background=light
+    " set background=dark
+    " colorscheme myColorScheme
+    " colorscheme sierra
+
+    " colorscheme molokai
+    colorscheme disco
+    " let g:airline_theme = 'monochrome'
+
+    " Remove background color from the theme
+    " (use terminal background color)
+    " hi Normal ctermbg=none
+
+
+    " Airline plugin config
+    " let g:airline#extensions#tabline#enabled = 1
+    " let g:airline_powerline_fonts = 1
+
+catch
+    colorscheme default
+endtry
+
+" 256 colors
+set t_Co=256
+
+" Status line
+"
+" Colors: :so $VIMRUNTIME/syntax/hitest.vim
+
+set laststatus=2
+set statusline=
+" set statusline+=%#CursorColumn#
+set statusline+=%#PmenuSel#
+set statusline+=\ %F
+set statusline+=%m
+set statusline+=%=
+
+" set statusline+=%#StatusLineTermNC#
+" set statusline+=%#DiffAdd#
+set statusline+=%#StatusLineNC#
+" set statusline+=%#PmenuSel#
+
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
+set statusline+=\ 
+
+" Split line character
+set enc=utf-8
+set fillchars+=vert:\│
+highlight VertSplit ctermbg=NONE guibg=NONE
+
+" Disable VI compatibility mode (just to be sure)
+set nocompatible
+
+"" Display line numbers
+" set number
+" set relativenumber
+
+set whichwrap+=<,>,[,]
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set smartindent
+set noswapfile
+
+" Automatic line break
+"set textwidth=80
+
+" set colorcolumn=80
+
+" highlight search results
+set hlsearch
+
+" Instantly highlight next occurrence of search pattern
+set incsearch
+
+" highlight matching braces
+set showmatch
+
+" Switch buffer without saving
+set hidden
+
+" Detect external file modification
+" set autoread
+
+" Soft wrap at space only
+set nolist wrap linebreak breakat&vim
+
+" backspace works the usual way in insert mode
+set backspace=indent,eol,start
+
+" activate mouse
+set mouse=a
+
+" Mouse selections are in SELECT mode rather than INSERT (allow immediate
+" replacement with any character)
+" set selectmode+=mouse
+
+" fuzzy find
+set path+=**
+set wildmenu
+
+" Set bell sound and 'visual bell' off
+set vb t_vb=
+set novb
+
+" Disable auto comment on new lines
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+
+" Tab key behavior
+"   (TODO: the '4' should be taken from 'tabstop')
+"   (TODO: doesn't work well near end of line... use insert C-d?)
+" nnoremap <S-Tab> mZ<<`Z4h
+nnoremap <Tab> mZ>>`Z4l
+vnoremap <Tab> mZ>`Z4lgv
+nnoremap <S-Tab> a<C-d><Esc>
+vnoremap <S-Tab> mZ<`Z4hgv
+inoremap <S-Tab> <C-d>
+
+
+" Allow capital letters for write and quit
+command! WQ wq
+command! Wq wq
+command! W w
+command! Q q
+
+
+" Copy-cut-paste
+smap <C-c> <C-g>"+y
+vunmap <C-c>
+vmap <C-c> "+y
+smap <C-x> <C-g>"+d
+vmap <C-x> "+d
+imap <C-v> <C-o>:set paste<CR><C-r>+<C-o>:set nopaste<CR>
+smap <C-v> <C-o>"+gP
+vmap <C-v> d"+gP
+
+
+" Shift up/down moves only one line. Useful to avoid accidental
+" page up/down.
+imap <S-Up> <Up>
+imap <S-Down> <Down>
+nmap <S-Up> <Up>
+nmap <S-Down> <Down>
+vmap <S-Up> <Up>
+vmap <S-Down> <Down>
+
+" Ctrl-del + Ctrl-backspace to delete words
+imap <C-BS> <C-W>
+imap <C-Del> <C-O>dw
+
+" Terminal: escape for normal mode
+"if v:version >= 800
+try
+    tnoremap <Esc><Esc> <C-\><C-n>
+    " tnoremap <S-Esc> <Esc>
+    " tnoremap <Esc> <C-\><C-n>
+endtry
+"endif
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Window motion
+
+" Terminal mode:
+try
+    tnoremap <M-Left> <c-\><c-n><c-w>h
+    tnoremap <M-Down> <c-\><c-n><c-w>j
+    tnoremap <M-Up> <c-\><c-n><c-w>k
+    tnoremap <M-Right> <c-\><c-n><c-w>l
+    tnoremap <M-h> <c-\><c-n><c-w>h
+    tnoremap <M-j> <c-\><c-n><c-w>j
+    tnoremap <M-k> <c-\><c-n><c-w>k
+    tnoremap <M-l> <c-\><c-n><c-w>l
+endtry
+
+" Insert mode:
+inoremap <M-Left> <Esc><c-w>h
+inoremap <M-Down> <Esc><c-w>j
+inoremap <M-Up> <Esc><c-w>k
+inoremap <M-Right> <Esc><c-w>l
+inoremap <M-h> <Esc><c-w>h
+inoremap <M-j> <Esc><c-w>j
+inoremap <M-k> <Esc><c-w>k
+inoremap <M-l> <Esc><c-w>l
+
+" Visual mode:
+vnoremap <M-Left> <Esc><c-w>h
+vnoremap <M-Down> <Esc><c-w>j
+vnoremap <M-Up> <Esc><c-w>k
+vnoremap <M-Right> <Esc><c-w>l
+vnoremap <M-h> <Esc><c-w>h
+vnoremap <M-j> <Esc><c-w>j
+vnoremap <M-k> <Esc><c-w>k
+vnoremap <M-l> <Esc><c-w>l
+
+" Normal mode:
+nnoremap <M-Left> <c-w>h
+nnoremap <M-Down> <c-w>j
+nnoremap <M-Up> <c-w>k
+nnoremap <M-Right> <c-w>l
+nnoremap <M-h> <c-w>h
+nnoremap <M-j> <c-w>j
+nnoremap <M-k> <c-w>k
+nnoremap <M-l> <c-w>l
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ctrl-<Right> behave as 'e' instead of 'w' on last word on line.
+
+function! RightMotionN()
+    let initialLine=line('.')
+    normal! e
+    let newLine=line('.')
+
+    " If the line as changed...
+    if initialLine != newLine
+        normal lb
+    else
+
+        let initialLine=line('.')
+        normal! bw
+        let newLine=line('.')
+        if initialLine != newLine
+            normal bel
+        endif
+    endif
+    return ""
+endfunction
+
+nnoremap <silent> <C-Right> :call RightMotionN()<CR>
+
+function! RightMotionI()
+    let initialLine=line('.')
+    normal! e
+    let newLine=line('.')
+
+    " If the line as changed...
+    if initialLine != newLine
+        normal lb
+    else
+
+        let initialLine=line('.')
+        normal! bw
+        let newLine=line('.')
+        if initialLine != newLine
+            normal bel
+
+            " line added for insert mode
+            startinsert!
+
+        endif
+    endif
+    return ""
+endfunction
+
+inoremap <silent> <C-Right> <C-R>=RightMotionI()<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+" Make Ctrl-left/right consistent with insert mode
+nmap <C-Left> b
+" nmap <C-Right> w
+
+
+" Move up and down in wrapped lines
+nmap <Down> gj
+nmap <Up> gk
+" nmap k gk
+" nmap j gj
+" imap <silent> <Up> <C-o>gk
+" imap <silent> <Down> <C-o>gj
+
+" Change buffer with F1 and F2 (previous, next)
+nmap <F1> :bp<CR>
+imap <F1> <Esc>:bp<CR>
+vmap <F1> <Esc>:bp<CR>
+nmap <F2> :bn<CR>
+imap <F2> <Esc>:bn<CR>
+vmap <F2> <Esc>:bn<CR>
+try
+    tmap <F1> <C-\><C-n>:bp<CR>
+    tmap <F2> <C-\><C-n>:bn<CR>
+endtry
+
+" Move lines with alt-arrow, alt-j, alt-k
+" nnoremap <A-j> :m .+1<CR>==
+" nnoremap <A-k> :m .-2<CR>==
+" inoremap <A-j> <Esc>:m .+1<CR>==gi
+" inoremap <A-k> <Esc>:m .-2<CR>==gi
+" vnoremap <A-j> :m '>+1<CR>gv=gv
+" vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" nnoremap <A-Down> :m .+1<CR>==
+" nnoremap <A-Up> :m .-2<CR>==
+" inoremap <A-Down> <Esc>:m .+1<CR>==gi
+" inoremap <A-Up> <Esc>:m .-2<CR>==gi
+" vnoremap <A-Down> :m '>+1<CR>gv=gv
+" vnoremap <A-Up> :m '<-2<CR>gv=gv
+
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Latex setting
+
+autocmd BufNewFile,BufRead *.tex set spell
+autocmd BufNewFile,BufRead *.tex set nofoldenable
+autocmd BufNewFile,BufRead *.tex set textwidth=80
+autocmd BufNewFile,BufRead *.tex imap <C-BS> <C-W>
+autocmd BufNewFile,BufRead *.tex imap <C-Del> <C-O>dw
+autocmd BufNewFile,BufRead *.tex let g:tex_flavor='latex'
+
+
+" Paragraph formatting
+fun! TeX_fmt()
+    if (getline(".") != "")
+    let save_cursor = getpos(".")
+        let op_wrapscan = &wrapscan
+        set nowrapscan
+        let par_begin = '^\(%D\)\=\s*\($\|\\begin\|\\end\|\\\[\|\\\]\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\|\\noindent\>\)'
+        let par_end   = '^\(%D\)\=\s*\($\|\\begin\|\\end\|\\\[\|\\\]\|\\place\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\)'
+    try
+      exe '?'.par_begin.'?+'
+    catch /E384/
+      1
+    endtry
+        norm V
+    try
+      exe '/'.par_end.'/-'
+    catch /E385/
+      $
+    endtry
+    norm gq
+        let &wrapscan = op_wrapscan
+    call setpos('.', save_cursor)
+    endif
+endfun
+
+autocmd BufNewFile,BufRead *.tex nmap Q :call TeX_fmt()<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Programming language settings
+
+" Matlab comment
+autocmd FileType matlab setlocal commentstring=%\ %s
+
+" gmsh comments
+autocmd BufNewFile,BufRead *.geo setlocal commentstring=//\ %s
+
+" C++ comments
+autocmd FileType cpp setlocal commentstring=//\ %s
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" generic text (.txt) settings
+autocmd BufNewFile,BufRead *.txt set spell
+autocmd BufNewFile,BufRead *.txt set spelllang=fr
+
+
+
